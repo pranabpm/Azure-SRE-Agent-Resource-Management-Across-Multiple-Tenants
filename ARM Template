@@ -1,0 +1,95 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "mspOfferName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specify a unique name for your offer"
+      },
+      "defaultValue": "lighthouse-sre-demo"
+    },
+    "mspOfferDescription": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Managed Service Provider offering"
+      },
+      "defaultValue": "lighthouse-sre-demo"
+    }
+  },
+  "variables": {
+    "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
+    "mspAssignmentName": "[guid(parameters('mspOfferName'))]",
+    "managedByTenantId": "6e03bca1-4300-400d-9e80-efc3938fa4dd",
+    "authorizations": [
+      {
+        "principalId": "504adfc5-da83-47d4-8709-35d307374a7b",
+        "roleDefinitionId": "e40ec5ca-96e0-45a2-b4ff-59039f2c2b59",
+        "principalIdDisplayName": "Pranab Mandal"
+      },
+      {
+        "principalId": "504adfc5-da83-47d4-8709-35d307374a7b",
+        "roleDefinitionId": "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9",
+        "delegatedRoleDefinitionIds": [
+          "b24988ac-6180-42a0-ab88-20f7382dd24c",
+          "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+        ],
+        "principalIdDisplayName": "Pranab Mandal"
+      },
+      {
+        "principalId": "504adfc5-da83-47d4-8709-35d307374a7b",
+        "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+        "principalIdDisplayName": "Pranab Mandal"
+      },
+      {
+        "principalId": "0374ff5c-5272-49fa-878a-d556ac9adc34",
+        "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+        "principalIdDisplayName": "sre-agent-ext-sub1-4n4y4v5jjdtuu"
+      },
+      {
+        "principalId": "0374ff5c-5272-49fa-878a-d556ac9adc34",
+        "roleDefinitionId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
+        "principalIdDisplayName": "sre-agent-ext-sub1-4n4y4v5jjdtuu"
+      },
+      {
+        "principalId": "0374ff5c-5272-49fa-878a-d556ac9adc34",
+        "roleDefinitionId": "73c42c96-874c-492b-b04d-ab87d138a893",
+        "principalIdDisplayName": "sre-agent-ext-sub1-4n4y4v5jjdtuu"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspRegistrationName')]",
+      "properties": {
+        "registrationDefinitionName": "[parameters('mspOfferName')]",
+        "description": "[parameters('mspOfferDescription')]",
+        "managedByTenantId": "[variables('managedByTenantId')]",
+        "authorizations": "[variables('authorizations')]"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspAssignmentName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      ],
+      "properties": {
+        "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "mspOfferName": {
+      "type": "string",
+      "value": "[concat('Managed by', ' ', parameters('mspOfferName'))]"
+    },
+    "authorizations": {
+      "type": "array",
+      "value": "[variables('authorizations')]"
+    }
+  }
+}

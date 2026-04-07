@@ -42,7 +42,7 @@ To allow a principalId to assign roles to a managed identity in the customer ten
 }
 In addition SRE agent would require certain roles at the managed identity level inorder to access and operate on those services. Locate SRE agent User assigned managed identity and add roles to the service principal. For the demo purpose I will assign Reader, Monitoring Reader, and Log Analytics Reader role.
 <img width="1545" height="295" alt="image" src="https://github.com/user-attachments/assets/79cb30d0-c971-44ea-8060-7d0672f802b3" />
-The sample template used for this demo can be found here.????
+The sample template used for this demo can be found [here](ARM Template).
 Login to the customers tenant and navigate to the service providers from the Azure Portal. From Service Providers overview screen select service provider offer from the left navigation pane.
 From the top menu select the Add offer drop down and select Add via template
 <img width="1289" height="354" alt="image" src="https://github.com/user-attachments/assets/249a53f9-0194-4b38-b0b5-81a5b5cb41d4" />
